@@ -43,10 +43,10 @@ debug: CFLAGS += $(DEBUG_CFLAGS)
 release: CFLAGS += $(RELEASE_CFLAGS)
 ######################################################################################
 
-LDFLAGS = -lpthread
+LDFLAGS = -lpthread -lm
 
 ######################################################################################
-all: debug install unitTest_install
+all: debug install unitTest
 
 debug: $(LIB_NAME)
 
@@ -57,19 +57,14 @@ $(LIB_NAME): $(OBJS)
 %.o: %.c
 	$(CC) $(CFLAGS) $(INC_DIR) -c $< -o $@ $(LDFLAGS)
 install: copy_includes
-	$(MK) $(OUT)
 	$(MK) $(BIN)
 	$(MV) $(LIB_NAME) $(BIN)
-	$(MV) $(BIN) out/
-	$(MV) $(INCLUDES_DIR) $(OUT)
-clean: includes_clean
+clean: includes_clean unitTest_clean
 	$(ECHO) -e "\033[32;1mCleaning binary files\033[0m"
-	$(RM) $(LIB_NAME) $(OBJS) $(BIN) $(OUT)
+	$(RM) $(LIB_NAME) $(OBJS) $(BIN)
 unitTest:
 	$(ECHO) -e "\033[32;1mStart compile unit test\033[0m"
 	$(CD) $(UNITTEST_TARGET) && $(MAKE)
-unitTest_install: unitTest
-	$(CD) $(UNITTEST_TARGET) && $(MV) $(UNITTEST_TARGET) ../$(OUT)/$(BIN)/$(UNITTEST_TARGET)
 copy_includes: $(INCLUDES_DIRS)
 
 $(INCLUDES_DIR)/%: $(BASE_DIR)/%
@@ -79,6 +74,8 @@ $(INCLUDES_DIR)/%: $(BASE_DIR)/%
 includes_clean:
 	$(ECHO) -e "\033[32;1mCleaning includes directory\033[0m"
 	$(RM) $(INCLUDES_DIR)
+unitTest_clean:
+	$(CD) $(UNITTEST_TARGET) && $(MAKE) clean
 help:
 	$(ECHO) -e "\033[36;1mUsage: make [target]"
 	$(ECHO) -e "\033[36;1mTargets:"
@@ -88,6 +85,5 @@ help:
 	$(ECHO) -e "\033[36;1m  [install           ] Install the library\033[0m"
 	$(ECHO) -e "\033[36;1m  [clean             ] Remove build artifacts\033[0m"
 	$(ECHO) -e "\033[36;1m  [unitTest          ] Build and execute unitTest\033[0m"
-	$(ECHO) -e "\033[36;1m  [unitTest_install  ] Install unitTest\033[0m"
 	$(ECHO) -e "\033[36;1m  [help              ] Show this help message\033[0m"
 .PHONY: all debug release clean unitTest unitTest_install help copy_includes

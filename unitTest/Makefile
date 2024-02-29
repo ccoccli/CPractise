@@ -1,4 +1,5 @@
 CC := gcc
+TOUCH := touch
 CFLAGS := -std=c11 -Wall
 
 INC_DIR := -I../base/sys \
@@ -6,16 +7,18 @@ INC_DIR := -I../base/sys \
 					 -I../base/log/inc \
 					 -I../base/sys/inc
 
-LDFLAGS := -L../out/bin -lsys_base -lpthread
+LDFLAGS := -L../bin -lsys_base -lpthread
 
 TARGET := unitTest
 
-all: $(TARGET)
+all: touch $(TARGET)
 
+touch:
+	$(TOUCH) main.c
 $(TARGET): main.c
 	$(CC) $(CFLAGS) $(INC_DIR) $^ -o $@ $(LDFLAGS)
 
 clean:
-	rm -f $(TARGET)
+	rm -rf $(TARGET)
 
 .PHONY: all clean
