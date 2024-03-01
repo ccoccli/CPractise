@@ -19,6 +19,6 @@ $(TARGET): main.c
 	$(CC) $(CFLAGS) $(INC_DIR) $^ -o $@ $(LDFLAGS)
 
 clean:
-	rm -rf $(TARGET)
+	rm -rf $(TARGET) *.log
 
 .PHONY: all clean
