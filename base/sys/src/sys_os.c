@@ -154,7 +154,7 @@ TaskStatus sys_os_task_create(const char *ptaskName, task_entry_function pFunc, 
   pthread_attr_destroy(&attr);
   return task_success;
 }
-TaskStatus sys_os_task_destory(unsigned int pTaskId)
+TaskStatus sys_os_task_destory(const unsigned int pTaskId)
 {
   if (pTaskId == NULL || pTaskId == INVALID_VALUE)
   {
@@ -178,4 +178,91 @@ TaskStatus sys_os_task_destory(unsigned int pTaskId)
   sys_os_free(task);
 
   return task_success;
+}
+bool sys_os_semaphore_create(unsigned int pInitialTokenCount, unsigned int *pHandle)
+{
+  sem_t *pSem = (sem_t *)sys_os_malloc(sizeof(sem_t));
+
+  if (NULL == pSem)
+  {
+    return false;
+  }
+
+  if (-1 == sem_init(pSem, 0, pInitialTokenCount))
+  {
+    return false;
+  }
+  *pHandle = (unsigned int)pSem;
+  return true;
+}
+bool sys_os_semaphore_destory(unsigned int pHandle)
+{
+  if (pHandle == NULL || pHandle == INVALID_VALUE)
+  {
+    return false;
+  }
+
+  sem_t *pSem = (sem_t *)pHandle;
+
+  if (sem_destroy(pSem) == -1)
+  {
+    sys_os_free(pSem);
+
+    return false;
+  }
+
+  sys_os_free(pSem);
+
+  return true;
+}
+bool sys_os_semaphore_release(unsigned int pHandle)
+{
+  if (pHandle == NULL || pHandle == INVALID_VALUE)
+  {
+    return false;
+  }
+
+  sem_t *pSem = (sem_t *)pHandle;
+  if (0 != sem_post(pSem))
+  {
+    return false;
+  }
+  return true;
+}
+bool sys_os_semaphore_wait(unsigned int pHandle, unsigned int pWaitTime)
+{
+  if (pHandle == NULL || pHandle == INVALID_VALUE)
+  {
+    return false;
+  }
+
+  struct timespec ts;
+  struct timeval tv;
+  sem_t *pSem = (sem_t *)pHandle;
+
+  if (pWaitTime == INVALID_VALUE)
+  {
+    if (0 != sem_wait(pSem))
+    {
+      return false;
+    }
+  }
+  else
+  {
+    gettimeofday(&tv, NULL);
+
+    int sec = pWaitTime / 1000;
+    int msec = pWaitTime % 1000;
+
+    ts.tv_sec = tv.tv_sec + sec;
+    ts.tv_nsec = tv.tv_usec * 1000 + msec * 1000 * 1000;
+    ts.tv_sec += ts.tv_nsec / (1000 * 1000 * 1000);
+    ts.tv_nsec %= (1000 * 1000 * 1000);
+
+    return sem_timedwait(pSem, &ts) == 0;
+  }
+}
+unsigned int sys_os_queue_create(const unsigned int pDeepth, const unsigned char *pQueueName, unsigned int *pHandle)
+{
+  
 }

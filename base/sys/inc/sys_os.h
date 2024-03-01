@@ -15,6 +15,7 @@
 
 #define ADDED_STACK_SIZE (8 * 1024)
 
+#define MAX_QUEUE_MSG_SIZE 1024
 typedef enum _task_status_e
 {
   task_success = 0,
@@ -58,6 +59,14 @@ void sys_os_sleep(unsigned int pWaitTime);
 
 void *sys_os_malloc(unsigned int pSize);
 void sys_os_free(void *iAddress);
+
 TaskStatus sys_os_task_create(const char *ptaskName, task_entry_function pFunc, unsigned int pStackSize, unsigned int pTaskPriority, unsigned int *pTaskId, void *pParam);
-TaskStatus sys_os_task_destory(unsigned int pTaskId);
+TaskStatus sys_os_task_destory(const unsigned int pTaskId);
+
+bool sys_os_semaphore_create(unsigned int pInitialTokenCount, unsigned int *pHandle);
+bool sys_os_semaphore_destory(unsigned int pHandle);
+bool sys_os_semaphore_release(unsigned int pHandle);
+bool sys_os_semaphore_wait(unsigned int pHandle, unsigned int pWaitTime);
+
+unsigned int sys_os_queue_create(const unsigned int pDeepth, const unsigned char *pQueueName, unsigned int *pHandle);
 #endif //__SYS_OS_H__
