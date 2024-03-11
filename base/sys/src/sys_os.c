@@ -450,3 +450,12 @@ sys_os_bool sys_os_queue_send_msg(const sys_os_handle pHandle, const sys_os_ptr 
 
   return true;
 }
+
+unsigned long long int sys_os_get_os_version(void)
+{
+  return OS_VERSION;
+}
+unsigned long long int sys_os_get_os_build_date(void)
+{
+  return getCurrentUTCTimestamp();
+}

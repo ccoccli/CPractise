@@ -31,7 +31,7 @@ BIN := ./bin
 BASE_DIR := base
 INCLUDES_DIR := includes
 
-BASE_INC_DIRS := $(wildcard $(BASE_DIR)/*/inc)
+BASE_INC_DIRS := $(wildcard $(BASE_DIR)/*/inc) $(wildcard $(BASE_DIR)/sys/*.h)
 INCLUDES_DIRS := $(patsubst $(BASE_DIR)/%,$(INCLUDES_DIR)/%,$(BASE_INC_DIRS))
 ######################################################################################
 CFLAGS := -std=c11 -Wall
@@ -42,9 +42,7 @@ RELEASE_CFLAGS := -O2
 debug: CFLAGS += $(DEBUG_CFLAGS)
 release: CFLAGS += $(RELEASE_CFLAGS)
 ######################################################################################
-
 LDFLAGS = -lpthread -lm
-
 ######################################################################################
 all: debug install unitTest
 

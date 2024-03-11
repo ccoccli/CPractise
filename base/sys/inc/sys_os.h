@@ -72,118 +72,132 @@ typedef struct _sys_os_queue_msg_s
 } QueueMsg;
 
 /**
- * @brief Ê¹µ±Ç°Ïß³ÌĞİÃßÖ¸¶¨Ê±¼ä£¨ºÁÃë£©¡£
+ * @brief ä½¿å½“å‰çº¿ç¨‹ä¼‘çœ æŒ‡å®šæ—¶é—´ï¼ˆæ¯«ç§’ï¼‰ã€‚
  * 
- * @param pWaitTime ĞİÃßÊ±¼ä£¬µ¥Î»ºÁÃë¡£
+ * @param pWaitTime ä¼‘çœ æ—¶é—´ï¼Œå•ä½æ¯«ç§’ã€‚
  */
 void sys_os_sleep(const unsigned int pWaitTime);
 
 /**
- * @brief ·ÖÅäÖ¸¶¨´óĞ¡µÄÄÚ´æ¿Õ¼ä¡£
+ * @brief åˆ†é…æŒ‡å®šå¤§å°çš„å†…å­˜ç©ºé—´ã€‚
  * 
- * @param pSize ·ÖÅäÄÚ´æµÄ´óĞ¡£¬µ¥Î»×Ö½Ú¡£
- * @return ·ÖÅäµ½µÄÄÚ´æµÄÖ¸Õë£¬Èç¹û·ÖÅäÊ§°ÜÔò·µ»Ø NULL¡£
+ * @param pSize åˆ†é…å†…å­˜çš„å¤§å°ï¼Œå•ä½å­—èŠ‚ã€‚
+ * @return åˆ†é…åˆ°çš„å†…å­˜çš„æŒ‡é’ˆï¼Œå¦‚æœåˆ†é…å¤±è´¥åˆ™è¿”å› NULLã€‚
  */
 sys_os_ptr sys_os_malloc(const unsigned int pSize);
 
 /**
- * @brief ÊÍ·ÅÖ®Ç°Í¨¹ı sys_os_malloc ·ÖÅäµÄÄÚ´æ¡£
+ * @brief é‡Šæ”¾ä¹‹å‰é€šè¿‡ sys_os_malloc åˆ†é…çš„å†…å­˜ã€‚
  * 
- * @param iAddress ÒªÊÍ·ÅµÄÄÚ´æµØÖ·¡£
+ * @param iAddress è¦é‡Šæ”¾çš„å†…å­˜åœ°å€ã€‚
  */
 void sys_os_free(sys_os_ptr iAddress);
 
 /**
- * @brief ´´½¨Ò»¸öĞÂµÄÈÎÎñ¡£
+ * @brief åˆ›å»ºä¸€ä¸ªæ–°çš„ä»»åŠ¡ã€‚
  * 
- * @param ptaskName ÈÎÎñµÄÃû³Æ¡£
- * @param pFunc ÈÎÎñµÄÈë¿Úº¯Êı¡£
- * @param pStackSize ÈÎÎñµÄÕ»´óĞ¡¡£
- * @param pTaskPriority ÈÎÎñµÄÓÅÏÈ¼¶¡£
- * @param pTaskId ÈÎÎñµÄ±êÊ¶·û£¬ÓÃÓÚ·µ»Ø´´½¨µÄÈÎÎñµÄ¾ä±ú¡£
- * @param pParam ´«µİ¸øÈÎÎñÈë¿Úº¯ÊıµÄ²ÎÊı¡£
- * @return ´´½¨ÈÎÎñµÄ×´Ì¬£¬task_success ±íÊ¾³É¹¦£¬ÆäËûÖµ±íÊ¾Ê§°Ü¡£
+ * @param ptaskName ä»»åŠ¡çš„åç§°ã€‚
+ * @param pFunc ä»»åŠ¡çš„å…¥å£å‡½æ•°ã€‚
+ * @param pStackSize ä»»åŠ¡çš„æ ˆå¤§å°ã€‚
+ * @param pTaskPriority ä»»åŠ¡çš„ä¼˜å…ˆçº§ã€‚
+ * @param pTaskId ä»»åŠ¡çš„æ ‡è¯†ç¬¦ï¼Œç”¨äºè¿”å›åˆ›å»ºçš„ä»»åŠ¡çš„å¥æŸ„ã€‚
+ * @param pParam ä¼ é€’ç»™ä»»åŠ¡å…¥å£å‡½æ•°çš„å‚æ•°ã€‚
+ * @return åˆ›å»ºä»»åŠ¡çš„çŠ¶æ€ï¼Œtask_success è¡¨ç¤ºæˆåŠŸï¼Œå…¶ä»–å€¼è¡¨ç¤ºå¤±è´¥ã€‚
  */
 TaskStatus sys_os_task_create(const char *ptaskName, task_entry_function pFunc, unsigned int pStackSize, unsigned int pTaskPriority, sys_os_handle *pTaskId, sys_os_ptr pParam);
 
 /**
- * @brief Ïú»ÙÖ¸¶¨µÄÈÎÎñ¡£
+ * @brief é”€æ¯æŒ‡å®šçš„ä»»åŠ¡ã€‚
  * 
- * @param pTaskId ÒªÏú»ÙµÄÈÎÎñµÄ¾ä±ú¡£
- * @return ÈÎÎñÏú»ÙµÄ×´Ì¬£¬task_success ±íÊ¾³É¹¦£¬ÆäËûÖµ±íÊ¾Ê§°Ü¡£
+ * @param pTaskId è¦é”€æ¯çš„ä»»åŠ¡çš„å¥æŸ„ã€‚
+ * @return ä»»åŠ¡é”€æ¯çš„çŠ¶æ€ï¼Œtask_success è¡¨ç¤ºæˆåŠŸï¼Œå…¶ä»–å€¼è¡¨ç¤ºå¤±è´¥ã€‚
  */
 TaskStatus sys_os_task_destory(const sys_os_handle pTaskId);
 
 /**
- * @brief ´´½¨Ò»¸öĞÅºÅÁ¿¡£
+ * @brief åˆ›å»ºä¸€ä¸ªä¿¡å·é‡ã€‚
  * 
- * @param pInitialTokenCount ³õÊ¼ÁîÅÆÊı¡£
- * @param pHandle ÓÃÓÚ·µ»Ø´´½¨µÄĞÅºÅÁ¿µÄ¾ä±ú¡£
- * @return ´´½¨ĞÅºÅÁ¿µÄ×´Ì¬£¬true ±íÊ¾³É¹¦£¬false ±íÊ¾Ê§°Ü¡£
+ * @param pInitialTokenCount åˆå§‹ä»¤ç‰Œæ•°ã€‚
+ * @param pHandle ç”¨äºè¿”å›åˆ›å»ºçš„ä¿¡å·é‡çš„å¥æŸ„ã€‚
+ * @return åˆ›å»ºä¿¡å·é‡çš„çŠ¶æ€ï¼Œtrue è¡¨ç¤ºæˆåŠŸï¼Œfalse è¡¨ç¤ºå¤±è´¥ã€‚
  */
 sys_os_bool sys_os_semaphore_create(const unsigned int pInitialTokenCount, sys_os_handle *pHandle);
 
 /**
- * @brief Ïú»ÙÖ¸¶¨µÄĞÅºÅÁ¿¡£
+ * @brief é”€æ¯æŒ‡å®šçš„ä¿¡å·é‡ã€‚
  * 
- * @param pHandle ÒªÏú»ÙµÄĞÅºÅÁ¿µÄ¾ä±ú¡£
- * @return ĞÅºÅÁ¿Ïú»ÙµÄ×´Ì¬£¬true ±íÊ¾³É¹¦£¬false ±íÊ¾Ê§°Ü¡£
+ * @param pHandle è¦é”€æ¯çš„ä¿¡å·é‡çš„å¥æŸ„ã€‚
+ * @return ä¿¡å·é‡é”€æ¯çš„çŠ¶æ€ï¼Œtrue è¡¨ç¤ºæˆåŠŸï¼Œfalse è¡¨ç¤ºå¤±è´¥ã€‚
  */
 sys_os_bool sys_os_semaphore_destory(const sys_os_handle pHandle);
 
 /**
- * @brief ÊÍ·ÅĞÅºÅÁ¿ÖĞµÄÒ»¸öÁîÅÆ¡£
+ * @brief é‡Šæ”¾ä¿¡å·é‡ä¸­çš„ä¸€ä¸ªä»¤ç‰Œã€‚
  * 
- * @param pHandle ĞÅºÅÁ¿µÄ¾ä±ú¡£
- * @return ÊÍ·ÅÁîÅÆµÄ×´Ì¬£¬true ±íÊ¾³É¹¦£¬false ±íÊ¾Ê§°Ü¡£
+ * @param pHandle ä¿¡å·é‡çš„å¥æŸ„ã€‚
+ * @return é‡Šæ”¾ä»¤ç‰Œçš„çŠ¶æ€ï¼Œtrue è¡¨ç¤ºæˆåŠŸï¼Œfalse è¡¨ç¤ºå¤±è´¥ã€‚
  */
 sys_os_bool sys_os_semaphore_release(const sys_os_handle pHandle);
 
 /**
- * @brief µÈ´ıĞÅºÅÁ¿ÉÏµÄÁîÅÆ£¬¿ÉÉèÖÃµÈ´ı³¬Ê±Ê±¼ä¡£
+ * @brief ç­‰å¾…ä¿¡å·é‡ä¸Šçš„ä»¤ç‰Œï¼Œå¯è®¾ç½®ç­‰å¾…è¶…æ—¶æ—¶é—´ã€‚
  * 
- * @param pHandle ĞÅºÅÁ¿µÄ¾ä±ú¡£
- * @param pWaitTime µÈ´ıµÄ³¬Ê±Ê±¼ä£¬µ¥Î»ºÁÃë¡£
- * @return µÈ´ıÁîÅÆµÄ×´Ì¬£¬true ±íÊ¾³É¹¦£¬false ±íÊ¾Ê§°Ü»ò³¬Ê±¡£
+ * @param pHandle ä¿¡å·é‡çš„å¥æŸ„ã€‚
+ * @param pWaitTime ç­‰å¾…çš„è¶…æ—¶æ—¶é—´ï¼Œå•ä½æ¯«ç§’ã€‚
+ * @return ç­‰å¾…ä»¤ç‰Œçš„çŠ¶æ€ï¼Œtrue è¡¨ç¤ºæˆåŠŸï¼Œfalse è¡¨ç¤ºå¤±è´¥æˆ–è¶…æ—¶ã€‚
  */
 sys_os_bool sys_os_semaphore_wait(const sys_os_handle pHandle, const unsigned int pWaitTime);
 
 /**
- * @brief ´´½¨Ò»¸öÏûÏ¢¶ÓÁĞ¡£
+ * @brief åˆ›å»ºä¸€ä¸ªæ¶ˆæ¯é˜Ÿåˆ—ã€‚
  * 
- * @param pDeepth ÏûÏ¢¶ÓÁĞµÄÉî¶È¡£
- * @param pQueueName ÏûÏ¢¶ÓÁĞµÄÃû³Æ¡£
- * @param pHandle ÓÃÓÚ·µ»Ø´´½¨µÄÏûÏ¢¶ÓÁĞµÄ¾ä±ú¡£
- * @return ´´½¨ÏûÏ¢¶ÓÁĞµÄ×´Ì¬£¬true ±íÊ¾³É¹¦£¬false ±íÊ¾Ê§°Ü¡£
+ * @param pDeepth æ¶ˆæ¯é˜Ÿåˆ—çš„æ·±åº¦ã€‚
+ * @param pQueueName æ¶ˆæ¯é˜Ÿåˆ—çš„åç§°ã€‚
+ * @param pHandle ç”¨äºè¿”å›åˆ›å»ºçš„æ¶ˆæ¯é˜Ÿåˆ—çš„å¥æŸ„ã€‚
+ * @return åˆ›å»ºæ¶ˆæ¯é˜Ÿåˆ—çš„çŠ¶æ€ï¼Œtrue è¡¨ç¤ºæˆåŠŸï¼Œfalse è¡¨ç¤ºå¤±è´¥ã€‚
  */
 sys_os_bool sys_os_queue_create(const unsigned int pDeepth, const unsigned char *pQueueName, sys_os_handle *pHandle);
 
 /**
- * @brief Ïú»ÙÖ¸¶¨µÄÏûÏ¢¶ÓÁĞ¡£
+ * @brief é”€æ¯æŒ‡å®šçš„æ¶ˆæ¯é˜Ÿåˆ—ã€‚
  * 
- * @param pHandle ÒªÏú»ÙµÄÏûÏ¢¶ÓÁĞµÄ¾ä±ú¡£
- * @return ÏûÏ¢¶ÓÁĞÏú»ÙµÄ×´Ì¬£¬true ±íÊ¾³É¹¦£¬false ±íÊ¾Ê§°Ü¡£
+ * @param pHandle è¦é”€æ¯çš„æ¶ˆæ¯é˜Ÿåˆ—çš„å¥æŸ„ã€‚
+ * @return æ¶ˆæ¯é˜Ÿåˆ—é”€æ¯çš„çŠ¶æ€ï¼Œtrue è¡¨ç¤ºæˆåŠŸï¼Œfalse è¡¨ç¤ºå¤±è´¥ã€‚
  */
 sys_os_bool sys_os_queue_destory(const sys_os_handle pHandle);
 
 /**
- * @brief ´ÓÏûÏ¢¶ÓÁĞÖĞ½ÓÊÕÏûÏ¢£¬¿ÉÉèÖÃµÈ´ı³¬Ê±Ê±¼ä¡£
+ * @brief ä»æ¶ˆæ¯é˜Ÿåˆ—ä¸­æ¥æ”¶æ¶ˆæ¯ï¼Œå¯è®¾ç½®ç­‰å¾…è¶…æ—¶æ—¶é—´ã€‚
  * 
- * @param pHandle ÏûÏ¢¶ÓÁĞµÄ¾ä±ú¡£
- * @param pMsg ÓÃÓÚ´æ´¢½ÓÊÕµ½µÄÏûÏ¢µÄÖ¸Õë¡£
- * @param pWaitTimeMs µÈ´ıÏûÏ¢µÄ³¬Ê±Ê±¼ä£¬µ¥Î»ºÁÃë¡£
- * @return ½ÓÊÕÏûÏ¢µÄ×´Ì¬£¬true ±íÊ¾³É¹¦£¬false ±íÊ¾Ê§°Ü»ò³¬Ê±¡£
+ * @param pHandle æ¶ˆæ¯é˜Ÿåˆ—çš„å¥æŸ„ã€‚
+ * @param pMsg ç”¨äºå­˜å‚¨æ¥æ”¶åˆ°çš„æ¶ˆæ¯çš„æŒ‡é’ˆã€‚
+ * @param pWaitTimeMs ç­‰å¾…æ¶ˆæ¯çš„è¶…æ—¶æ—¶é—´ï¼Œå•ä½æ¯«ç§’ã€‚
+ * @return æ¥æ”¶æ¶ˆæ¯çš„çŠ¶æ€ï¼Œtrue è¡¨ç¤ºæˆåŠŸï¼Œfalse è¡¨ç¤ºå¤±è´¥æˆ–è¶…æ—¶ã€‚
  */
 sys_os_bool sys_os_queue_receive_msg(const sys_os_handle pHandle, sys_os_ptr pMsg, const unsigned int pWaitTimeMs);
 
 /**
- * @brief ÏòÏûÏ¢¶ÓÁĞÖĞ·¢ËÍÏûÏ¢¡£
+ * @brief å‘æ¶ˆæ¯é˜Ÿåˆ—ä¸­å‘é€æ¶ˆæ¯ã€‚
  * 
- * @param pHandle ÏûÏ¢¶ÓÁĞµÄ¾ä±ú¡£
- * @param pMsg Òª·¢ËÍµÄÏûÏ¢µÄÖ¸Õë¡£
- * @param pMsgSize ÏûÏ¢µÄ´óĞ¡¡£
- * @return ·¢ËÍÏûÏ¢µÄ×´Ì¬£¬true ±íÊ¾³É¹¦£¬false ±íÊ¾Ê§°Ü¡£
+ * @param pHandle æ¶ˆæ¯é˜Ÿåˆ—çš„å¥æŸ„ã€‚
+ * @param pMsg è¦å‘é€çš„æ¶ˆæ¯çš„æŒ‡é’ˆã€‚
+ * @param pMsgSize æ¶ˆæ¯çš„å¤§å°ã€‚
+ * @return å‘é€æ¶ˆæ¯çš„çŠ¶æ€ï¼Œtrue è¡¨ç¤ºæˆåŠŸï¼Œfalse è¡¨ç¤ºå¤±è´¥ã€‚
  */
 sys_os_bool sys_os_queue_send_msg(const sys_os_handle pHandle, const sys_os_ptr pMsg, const unsigned int pMsgSize);
+
+/**
+ * @brief è·å–æ“ä½œç³»ç»Ÿç‰ˆæœ¬ä¿¡æ¯
+ * 
+ * @return æ“ä½œç³»ç»Ÿç‰ˆæœ¬çš„æ— ç¬¦å·é•¿æ•´å‹è¡¨ç¤º
+ */
+unsigned long long int sys_os_get_os_version(void);
+
+/**
+ * @brief è·å–æ“ä½œç³»ç»Ÿæ„å»ºæ—¥æœŸ
+ * 
+ * @return æ“ä½œç³»ç»Ÿæ„å»ºæ—¥æœŸçš„æ— ç¬¦å·é•¿æ•´å‹è¡¨ç¤º
+ */
+unsigned long long int sys_os_get_os_build_date(void);
 
 #endif //__SYS_OS_H__
