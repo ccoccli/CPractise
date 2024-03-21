@@ -51,12 +51,12 @@ sys_bool ds_insert_elem_to_link_list(SLinkedList *pList, sys_int pPosition, sys_
 
   return sys_true;
 }
-ds_delete_elem_from_link_list(SLinkedList *pList, sys_int pPosition, sys_char *pValue)
+sys_bool ds_delete_elem_from_link_list(SLinkedList *pList, sys_int pPosition, sys_char *pValue)
 {
 
 }
 
-sys_bool init(struct _ds_singly_linked_list_s *pList)
+sys_bool link_list_init(struct _ds_singly_linked_list_s *pList)
 {
   pList->init_link_list = ds_init_linked_list;
   pList->insert_elem_to_link_list = ds_insert_elem_to_link_list;

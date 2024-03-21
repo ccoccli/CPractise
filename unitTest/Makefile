@@ -6,20 +6,26 @@ INC_DIR := -I../$(BASE_DIR)/sys \
 					 -I../$(BASE_DIR)/time/inc \
 					 -I../$(BASE_DIR)/log/inc \
 					 -I../$(BASE_DIR)/sys/inc \
-					 -I../$(DS_DIR)/$(LINKLIST)/$(INC)
+					 -I../$(DS_DIR)/$(LINKLIST)/inc
 
-LDFLAGS := -L../$(BIN) -L../ -lsys_base -lpthread
+LDFLAGS := -L../$(BASE_DIR) -L../$(DS_DIR) -lds -lsys_base -lpthread -lm
 
-TARGET := unitTest
+SRCS := main.c
+OBJS := $(SRCS:.c=.o)
 
-all: touch $(TARGET)
+TARGET := sample
 
-touch:
-	$(TOUCH) main.c
-$(TARGET): main.c
-	$(CC) $(CFLAGS) $(INC_DIR) $^ -o $@ $(LDFLAGS)
+all: $(TARGET) install
+
+$(TARGET): $(OBJS)
+	$(CC) $(OBJS) $(LIBS) -o $@ $(LDFLAGS)
+
+%.o: %.c
+	$(CC) $(CFLAGS) $(INC_DIR) -c $< -o $@
 
 clean:
-	rm -rf $(TARGET) *.log
+	$(RM) $(TARGET) *.o
 
-.PHONY: all clean
+install:
+	$(MV) $(TARGET) ../$(OUT)/$(BIN)
+.PHONY: all clean install

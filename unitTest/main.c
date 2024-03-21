@@ -9,7 +9,7 @@ int main()
 {
   SLinkedList p;
 
-  init(&p);
+  link_list_init(&p);
 
   p.init_link_list(&p, 10);
   for (int i = 0; i < p.iSize; i++)

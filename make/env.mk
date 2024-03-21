@@ -15,14 +15,21 @@ MAKE := make
 ECHO := @echo
 CP := cp -rf
 
+
+LIB := lib
 OUT := out
 BIN := bin
-BASE_DIR := base
+INCLUDES := includes
+
 DS_DIR := ds
 LINKLIST := linklist
-INCLUDES_DIR := includes
+
+BASE_DIR := base
 SYS := sys
 LOG := log
 TIME := time
 INC  := inc
 SRC := src
+
+UNITTEST := unitTest
+
