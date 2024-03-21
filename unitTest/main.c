@@ -3,61 +3,39 @@
 #include <sys_log.h>
 #include <sys_os.h>
 
-#define TEST_QUEUE_NAME "queue"
-#define TEST_TASK_NAME "task"
-static sys_os_handle g_QueueHandle = 0;
-static sys_os_handle g_TaskHandle = 0;
+#include <ds_singly_linked_list.h>
 
-void task(void *param)
-{
-  char buffer[1024];
-
-  memset(buffer, 0, 1024);
-  while (1)
-  {
-    if (sys_os_queue_receive_msg(g_QueueHandle, buffer, 10) != true)
-    {
-      continue;
-    }
-    else
-    {
-      INFO("%s\n", buffer);
-    }
-  }
-}
 int main()
 {
-  setLogLevel(Info);
-  //setOutLogToFileFlag(true);
+  SLinkedList p;
 
-  if (sys_os_queue_create(1, TEST_QUEUE_NAME, &g_QueueHandle) == true)
+  init(&p);
+
+  p.init_link_list(&p, 10);
+  for (int i = 0; i < p.iSize; i++)
   {
-    INFO("test queue create success, g_QueueHandle=0x%x\n", g_QueueHandle);
-  }
-  else
-  {
-    ERROR("test queue create failed!\n");
+    p.iElem[i] = i + 1;
+    p.iLength++;
   }
 
-  if (sys_os_task_create(TEST_TASK_NAME, task, 1024, TASK_PRIORITY_15, &g_TaskHandle, 0) == task_success)
+  for (int i = 0; i < p.iSize; i++)
   {
-    INFO("test task create success,g_TaskHandle=0x%x\n", g_TaskHandle);
+    printf("%3d ", p.iElem[i]);
   }
-  else
+  printf("\n");
+
+  p.insert_elem_to_link_list(&p, 4, 88);
+  for (int i = 0; i < p.iSize; i++)
   {
-    ERROR("test task create failed!\n");
+    printf("%3d ", p.iElem[i]);
   }
-  int count = 0;
-  char buf[1024];
+  printf("\n");
 
-
-  while(1)
+  p.insert_elem_to_link_list(&p, 7, 77);
+  for (int i = 0; i < p.iSize; i++)
   {
-    memset(buf, 0, sizeof(buf));
-    snprintf(buf, MAX_LOG_SINGLE_LINE, "conuter");
-    sys_os_queue_send_msg(g_QueueHandle, buf, 1024);
-
-    sys_os_sleep(3);
+    printf("%3d ", p.iElem[i]);
   }
+  printf("\n");
   return 0;
 }

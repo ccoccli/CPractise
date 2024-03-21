@@ -1,13 +1,14 @@
-CC := gcc
-TOUCH := touch
+include ../make/env.mk
+
 CFLAGS := -std=c11 -Wall
 
-INC_DIR := -I../base/sys \
-					 -I../base/time/inc \
-					 -I../base/log/inc \
-					 -I../base/sys/inc
+INC_DIR := -I../$(BASE_DIR)/sys \
+					 -I../$(BASE_DIR)/time/inc \
+					 -I../$(BASE_DIR)/log/inc \
+					 -I../$(BASE_DIR)/sys/inc \
+					 -I../$(DS_DIR)/$(LINKLIST)/$(INC)
 
-LDFLAGS := -L../bin -lsys_base -lpthread
+LDFLAGS := -L../$(BIN) -L../ -lsys_base -lpthread
 
 TARGET := unitTest
 

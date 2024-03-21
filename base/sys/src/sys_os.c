@@ -26,6 +26,25 @@ sys_os_ptr sys_os_malloc(const unsigned int pSize)
   // INFO("Success to apply for memory, ptr=0X%X.\n", ptr);
   return ptr;
 }
+sys_os_ptr sys_os_realloc(const sys_os_ptr pAddr, const unsigned int pSize)
+{
+  sys_os_ptr ptr = NULL;
+  if (pSize <= 0 || pAddr == NULL)
+  {
+    ERROR("The requested memory space is illegal, iSize=%d.\n", pSize);
+    return NULL;
+  }
+  ptr = realloc(pAddr, pSize);
+
+  if (ptr == NULL)
+  {
+    ERROR("Failed to apply for memory.\n");
+    return NULL;
+  }
+
+  // INFO("Success to apply for memory, ptr=0X%X.\n", ptr);
+  return ptr;
+}
 void sys_os_free(sys_os_ptr pAddress)
 {
   if (pAddress == NULL)

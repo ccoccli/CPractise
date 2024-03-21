@@ -86,6 +86,7 @@ void sys_os_sleep(const unsigned int pWaitTime);
  */
 sys_os_ptr sys_os_malloc(const unsigned int pSize);
 
+sys_os_ptr sys_os_realloc(const sys_os_ptr pAddr, const unsigned int pSize);
 /**
  * @brief 释放之前通过 sys_os_malloc 分配的内存。
  * 

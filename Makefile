@@ -1,87 +1,63 @@
+include make/env.mk
+
 LIB_NAME := libsys_base.a
 UNITTEST_TARGET := unitTest
 ######################################################################################
-CC := gcc
-CXX := g++
-RM := rm -rf
-MK := mkdir -p
-AR := ar rcs
-MV := mv
-TOUCH := touch
-STRIP := strip
-FIND := find
-CD := cd
-MAKE := make
-ECHO := @echo
-CP := cp
-######################################################################################
-OUT := ./out
-SRCS := $(wildcard base/time/src/*.c)
-SRCS += $(wildcard base/log/src/*.c)
-SRCS += $(wildcard base/sys/src/*.c)
+SRCS := $(wildcard $(BASE_DIR)/$(TIME)/$(SRC)/*.c)
+SRCS += $(wildcard $(BASE_DIR)/$(LOG)/$(SRC)/*.c)
+SRCS += $(wildcard $(BASE_DIR)/$(SYS)/$(SRC)/*.c)
+SRCS += $(wildcard $(DS_DIR)/$(LINKLIST)/$(SRC)/*.c)
 
 OBJS := $(patsubst %.c,%.o,$(SRCS))
-INC_DIR := -I./base/sys \
-					 -I./base/time/inc \
-					 -I./base/log/inc \
-					 -I./base/sys/inc
 
-BIN := ./bin
+INC_DIR := -I./$(BASE_DIR)/$(SYS) \
+					 -I./$(BASE_DIR)/$(TIME)/$(INC) \
+					 -I./$(BASE_DIR)/$(LOG)/$(INC) \
+					 -I./$(BASE_DIR)/$(SYS)/$(INC) \
+					 -I./$(DS_DIR)/$(LINKLIST)/$(INC)
 
-BASE_DIR := base
-INCLUDES_DIR := includes
-
-BASE_INC_DIRS := $(wildcard $(BASE_DIR)/*/inc) $(wildcard $(BASE_DIR)/sys/*.h)
+BASE_INC_DIRS := $(wildcard $(BASE_DIR)/*/$(INC)) $(wildcard $(BASE_DIR)/$(SYS)/*.h)
 INCLUDES_DIRS := $(patsubst $(BASE_DIR)/%,$(INCLUDES_DIR)/%,$(BASE_INC_DIRS))
 ######################################################################################
-CFLAGS := -std=c11 -Wall
-
-DEBUG_CFLAGS := -g
-RELEASE_CFLAGS := -O2
-
-debug: CFLAGS += $(DEBUG_CFLAGS)
-release: CFLAGS += $(RELEASE_CFLAGS)
+CFLAGS := -std=c11 -Wall -g
 ######################################################################################
 LDFLAGS = -lpthread -lm
 ######################################################################################
-all: debug install unitTest
+all: $(LIB_NAME) $(UNITTEST_TARGET) install
 
-debug: $(LIB_NAME)
-
-release: $(LIB_NAME)
-	$(STRIP) $(LIB_NAME)
 $(LIB_NAME): $(OBJS)
 	$(AR) $@ $^
 %.o: %.c
 	$(CC) $(CFLAGS) $(INC_DIR) -c $< -o $@ $(LDFLAGS)
+$(UNITTEST_TARGET):
+	$(CD) $(UNITTEST_TARGET) && $(MAKE)
+
 install: copy_includes
+	$(STRIP) $(LIB_NAME)
 	$(MK) $(BIN)
 	$(MV) $(LIB_NAME) $(BIN)
-clean: includes_clean unitTest_clean
-	$(ECHO) -e "\033[32;1mCleaning binary files\033[0m"
-	$(RM) $(LIB_NAME) $(OBJS) $(BIN)
-unitTest:
-	$(ECHO) -e "\033[32;1mStart compile unit test\033[0m"
-	$(CD) $(UNITTEST_TARGET) && $(MAKE)
+	$(MK) $(OUT)
+	$(MV) $(BIN) $(OUT)
+	$(CP) $(INCLUDES_DIR) $(OUT)
 copy_includes: $(INCLUDES_DIRS)
 
 $(INCLUDES_DIR)/%: $(BASE_DIR)/%
-	$(ECHO) -e "\033[32;1mCopying $< to $@\033[0m"
 	$(MK) $(@D)
 	$(CP) -r $< $@
+
+clean: includes_clean unitTest_clean
+	$(RM) $(LIB_NAME) $(OBJS) $(BIN) $(OUT)
 includes_clean:
-	$(ECHO) -e "\033[32;1mCleaning includes directory\033[0m"
 	$(RM) $(INCLUDES_DIR)
 unitTest_clean:
 	$(CD) $(UNITTEST_TARGET) && $(MAKE) clean
+
 help:
-	$(ECHO) -e "\033[36;1mUsage: make [target]"
-	$(ECHO) -e "\033[36;1mTargets:"
-	$(ECHO) -e "\033[36;1m  [all               ] Build debug and install\033[0m"
-	$(ECHO) -e "\033[36;1m  [debug             ] Build debug version\033[0m"
-	$(ECHO) -e "\033[36;1m  [release           ] Build release version and strip debug symbols\033[0m"
-	$(ECHO) -e "\033[36;1m  [install           ] Install the library\033[0m"
-	$(ECHO) -e "\033[36;1m  [clean             ] Remove build artifacts\033[0m"
-	$(ECHO) -e "\033[36;1m  [unitTest          ] Build and execute unitTest\033[0m"
-	$(ECHO) -e "\033[36;1m  [help              ] Show this help message\033[0m"
-.PHONY: all debug release clean unitTest unitTest_install help copy_includes
+	$(ECHO) "Usage: make [target]"
+	$(ECHO) "Targets:"
+	$(ECHO) "  [all               ] Build debug and install"
+	$(ECHO) "  [install           ] Install the library"
+	$(ECHO) "  [clean             ] Remove build artifacts"
+	$(ECHO) "  [unitTest          ] Build and execute unitTest"
+	$(ECHO) "  [help              ] Show this help message"
+.PHONY: all clean unitTest install unitTest_install help copy_includes
