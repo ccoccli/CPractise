@@ -3,39 +3,55 @@
 #include <sys_log.h>
 #include <sys_os.h>
 
-#include <ds_singly_linked_list.h>
+#include <ds_linked_list.h>
 
 int main()
 {
-  SLinkedList p;
+  LinkedList *ll = ds_linked_list_create(1);
 
-  link_list_init(&p);
+  ds_linked_list_push_back(ll, 2);
+  ds_linked_list_print(ll);
+  ds_linked_list_push_back(ll, 4);
+  ds_linked_list_print(ll);
+  ds_linked_list_push_back(ll, 8);
+  ds_linked_list_print(ll);
+  ds_linked_list_push_back(ll, 16);
+  ds_linked_list_print(ll);
+  ds_linked_list_push_back(ll, 32);
+  ds_linked_list_print(ll);
 
-  p.init_link_list(&p, 10);
-  for (int i = 0; i < p.iSize; i++)
-  {
-    p.iElem[i] = i + 1;
-    p.iLength++;
-  }
+  ds_linked_list_pop_back(ll);
+  ds_linked_list_print(ll);
+  ds_linked_list_pop_back(ll);
+  ds_linked_list_print(ll);
+  ds_linked_list_pop_back(ll);
+  ds_linked_list_print(ll);
 
-  for (int i = 0; i < p.iSize; i++)
-  {
-    printf("%3d ", p.iElem[i]);
-  }
-  printf("\n");
+  ds_linked_list_push_head(&ll, 100);
+  ds_linked_list_print(ll);
+  ds_linked_list_push_head(&ll, 200);
+  ds_linked_list_print(ll);
+  ds_linked_list_push_head(&ll, 300);
+  ds_linked_list_print(ll);
+  ds_linked_list_push_head(&ll, 400);
+  ds_linked_list_print(ll);
 
-  p.insert_elem_to_link_list(&p, 4, 88);
-  for (int i = 0; i < p.iSize; i++)
-  {
-    printf("%3d ", p.iElem[i]);
-  }
-  printf("\n");
+  ds_linked_list_pop_head(&ll);
+  ds_linked_list_print(ll);
 
-  p.insert_elem_to_link_list(&p, 7, 77);
-  for (int i = 0; i < p.iSize; i++)
-  {
-    printf("%3d ", p.iElem[i]);
-  }
-  printf("\n");
+  PRINTK("linked list length : %d\n", ds_linked_list_length(ll));
+
+  ds_linked_list_insert(&ll, 0, 11);
+  ds_linked_list_print(ll);
+
+  ds_linked_list_insert(&ll, 3, 22);
+  ds_linked_list_print(ll);
+
+  sys_int value = 0;
+  ds_linked_list_delete(&ll, 3, &value);
+  ds_linked_list_print(ll);
+  PRINTK("the value has been deleted is : %d\n", value);
+
+  ds_linked_list_destory(ll);
   return 0;
 }

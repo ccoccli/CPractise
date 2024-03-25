@@ -30,10 +30,10 @@ bool getLogFilePath(char *pLogFilePath, const unsigned char pLength);
 bool setLogFilePath(const char *pLogFilePath, const unsigned char pLength);
 void LogFunction(const LogLevel pLevel, const char *fmt, ...);
 
+#define PRINTK printf
 #define PRINT(fmt, arg...) printf(fmt, ##arg)
 
 #define WARN(fmt, arg...) LogFunction(Warning, fmt, ##arg)
 #define INFO(fmt, arg...) LogFunction(Info, fmt, ##arg)
 #define ERROR(fmt, arg...) LogFunction(Error, fmt, ##arg)
-
 #endif
