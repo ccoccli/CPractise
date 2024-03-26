@@ -1,15 +1,15 @@
 #include <sys_log.h>
 
-// 是否输出日志到文件(true | false)
-static bool g_outLogToFile = false;
+// 是否输出日志到文件(sys_true | sys_false)
+static sys_bool g_outLogToFile = sys_false;
 
 // 日志输出等级(Info | Warning | Error)
 static LogLevel g_level = Info;
 
 // 日志输出路径
-static char g_logFilePath[MAX_LOG_FILE_PATH];
+static sys_char g_logFilePath[MAX_LOG_FILE_PATH];
 
-void logMessage(const LogLevel pLevel)
+sys_void logMessage(const LogLevel pLevel)
 {
   baseTime time;
   getCurrentTime(&time);
@@ -37,7 +37,7 @@ void logMessage(const LogLevel pLevel)
 
   PRINT("[%04d:%02d:%02d-%02d:%02d:%02d] ", time.year, time.month, time.day, time.hour, time.minute, time.second);
 }
-bool writeLogToFile(const char *buffer)
+sys_bool writeLogToFile(const sys_char *buffer)
 {
   FILE *file = fopen(g_logFilePath, "a");
 
@@ -48,11 +48,11 @@ bool writeLogToFile(const char *buffer)
     {
       fprintf(file, "%s", buffer);
       fclose(file);
-      return true;
+      return sys_true;
     }
     else
     {
-      return false;
+      return sys_false;
     }
   }
   else
@@ -60,65 +60,65 @@ bool writeLogToFile(const char *buffer)
     fprintf(file, "%s", buffer);
     fclose(file);
 
-    return true;
+    return sys_true;
   }
 }
-void setLogLevel(const LogLevel pLevel)
+sys_void setLogLevel(const LogLevel pLevel)
 {
   g_level = pLevel;
 }
 
-LogLevel getLogLevel(void)
+LogLevel getLogLevel(sys_void)
 {
   return g_level;
 }
-bool getOutLogToFileFLag(void)
+sys_bool getOutLogToFileFLag(sys_void)
 {
   return g_outLogToFile;
 }
-void setOutLogToFileFlag(const bool pFlag)
+sys_void setOutLogToFileFlag(const sys_bool pFlag)
 {
   g_outLogToFile = pFlag;
 }
-bool getLogFilePath(char *pLogFilePath, const unsigned char pLength)
+sys_bool getLogFilePath(sys_char *pLogFilePath, const sys_uchar pLength)
 {
   if (pLength > MAX_LOG_FILE_PATH || pLength <= 0)
   {
     ERROR("File output path exceeds maximum length limit or minmum length limit, pLength=%d\n", pLength);
-    return false;
+    return sys_false;
   }
   if (pLogFilePath == NULL)
   {
     ERROR("The file output path pointer is null.\n");
-    return false;
+    return sys_false;
   }
 
   strncpy(pLogFilePath, g_logFilePath, pLength - 1);
   pLogFilePath[pLength - 1] = '\0';
 
-  return true;
+  return sys_true;
 }
-bool setLogFilePath(const char *pLogFilePath, const unsigned char pLength)
+sys_bool setLogFilePath(const sys_char *pLogFilePath, const sys_uchar pLength)
 {
   if (pLength > MAX_LOG_FILE_PATH || pLength <= 0)
   {
     ERROR("File output path exceeds maximum length limit or minmum length limit, pLength=%d\n", pLength);
-    return false;
+    return sys_false;
   }
   if (pLogFilePath == NULL)
   {
     ERROR("The file output path pointer is null.\n");
-    return false;
+    return sys_false;
   }
 
-  memset(g_logFilePath, 0, MAX_LOG_FILE_PATH);
+  sys_memset(g_logFilePath, 0, MAX_LOG_FILE_PATH);
 
   strncpy(g_logFilePath, pLogFilePath, pLength - 1);
   g_logFilePath[pLength - 1] = '\0';
 
-  return true;
+  return sys_true;
 }
-void LogFunction(const LogLevel pLevel, const char *fmt, ...)
+sys_void LogFunction(const LogLevel pLevel, const sys_char *fmt, ...)
 {
   logMessage(pLevel);
 
@@ -128,29 +128,29 @@ void LogFunction(const LogLevel pLevel, const char *fmt, ...)
   baseTime time;
   getCurrentTime(&time);
 
-  char buffer[MAX_LOG_SINGLE_LINE], sBuffer[MAX_LOG_SINGLE_LINE / 2];
-  memset(buffer, 0, MAX_LOG_SINGLE_LINE);
-  memset(sBuffer, 0, MAX_LOG_SINGLE_LINE / 2);
+  sys_char buffer[MAX_LOG_SINGLE_LINE], sBuffer[MAX_LOG_SINGLE_LINE / 2];
+  sys_memset(buffer, 0, MAX_LOG_SINGLE_LINE);
+  sys_memset(sBuffer, 0, MAX_LOG_SINGLE_LINE / 2);
 
-  vsnprintf((char *)sBuffer, MAX_LOG_SINGLE_LINE / 2, (char *)fmt, ap);
+  vsnprintf((sys_char *)sBuffer, MAX_LOG_SINGLE_LINE / 2, (sys_char *)fmt, ap);
 
   switch (pLevel)
   {
   case Warning:
   {
-    snprintf(buffer, MAX_LOG_SINGLE_LINE, "%s [%04d:%02d:%02d-%02d:%02d:%02d] %s",
+    sys_snprintf(buffer, MAX_LOG_SINGLE_LINE, "%s [%04d:%02d:%02d-%02d:%02d:%02d] %s",
              STR_WARN, time.year, time.month, time.day, time.hour, time.minute, time.second, sBuffer);
     break;
   }
   case Info:
   {
-    snprintf(buffer, MAX_LOG_SINGLE_LINE, "%s [%04d:%02d:%02d-%02d:%02d:%02d] %s",
+    sys_snprintf(buffer, MAX_LOG_SINGLE_LINE, "%s [%04d:%02d:%02d-%02d:%02d:%02d] %s",
              STR_INFO, time.year, time.month, time.day, time.hour, time.minute, time.second, sBuffer);
     break;
   }
   case Error:
   {
-    snprintf(buffer, MAX_LOG_SINGLE_LINE, "%s [%04d:%02d:%02d-%02d:%02d:%02d] %s",
+    sys_snprintf(buffer, MAX_LOG_SINGLE_LINE, "%s [%04d:%02d:%02d-%02d:%02d:%02d] %s",
              STR_ERROR, time.year, time.month, time.day, time.hour, time.minute, time.second, sBuffer);
     break;
   }
@@ -162,8 +162,8 @@ void LogFunction(const LogLevel pLevel, const char *fmt, ...)
 
   if (getOutLogToFileFLag())
   {
-    char fileName[MAX_LOG_FILE_PATH];
-    snprintf(fileName, MAX_LOG_FILE_PATH, LOG_NAME);
+    sys_char fileName[MAX_LOG_FILE_PATH];
+    sys_snprintf(fileName, MAX_LOG_FILE_PATH, LOG_NAME);
     setLogFilePath(fileName, MAX_LOG_FILE_PATH);
     writeLogToFile(buffer);
   }

@@ -17,6 +17,69 @@ sys_bool ds_init_linear_list(LinearList *pList, sys_int iSize)
 
   return sys_true;
 }
+sys_bool ds_init_linear_list_by_zero(LinearList *pList, sys_int iSize)
+{
+  pList->iElem = (sys_int *)sys_os_malloc(iSize * sizeof(sys_int));
+
+  if (pList->iElem == NULL)
+  {
+    pList->iElem = NULL;
+    pList->iLength = 0;
+    pList->iSize = 0;
+    return sys_false;
+  }
+
+  pList->iLength = iSize;
+  pList->iSize = iSize;
+
+  for(sys_int i = 0; i< iSize; i++)
+  {
+    pList->iElem[i] = 0;
+  }
+  return sys_true;
+}
+sys_bool ds_init_linear_list_by_one(LinearList *pList, sys_int iSize)
+{
+  pList->iElem = (sys_int *)sys_os_malloc(iSize * sizeof(sys_int));
+
+  if (pList->iElem == NULL)
+  {
+    pList->iElem = NULL;
+    pList->iLength = 0;
+    pList->iSize = 0;
+    return sys_false;
+  }
+
+  pList->iLength = iSize;
+  pList->iSize = iSize;
+
+  for(sys_int i = 0; i< iSize; i++)
+  {
+    pList->iElem[i] = 1;
+  }
+  return sys_true;
+}
+sys_bool ds_init_linear_list_by_value(LinearList *pList, sys_int iSize, sys_int pValue)
+{
+  pList->iElem = (sys_int *)sys_os_malloc(iSize * sizeof(sys_int));
+
+  if (pList->iElem == NULL)
+  {
+    pList->iElem = NULL;
+    pList->iLength = 0;
+    pList->iSize = 0;
+    return sys_false;
+  }
+
+  pList->iLength = iSize;
+  pList->iSize = iSize;
+
+  for(sys_int i = 0; i< iSize; i++)
+  {
+    pList->iElem[i] = pValue;
+  }
+  return sys_true;
+}
 sys_bool ds_destory_linear_list(LinearList *pList)
 {
   if (pList == NULL || pList->iElem == NULL)
@@ -46,7 +109,7 @@ sys_bool ds_insert_elem_to_linear_list(LinearList *pList, sys_int pPosition, sys
     pList->iElem = ptr;
     pList->iSize += SIZE_INCREASE_STEP;
   }
-  // INFO("addr=0x%x, size=%d,length=%d\n", pList->iElem, pList->iSize, pList->iLength);
+  //INFO("addr=0x%x, size=%d,length=%d\n", pList->iElem, pList->iSize, pList->iLength);
 
   sys_int *pos = &(pList->iElem[pPosition - 1]);
 
@@ -149,7 +212,15 @@ sys_bool ds_merge_linear_list(LinearList *pList_dst, LinearList *pList_src, sys_
   }
   return sys_true;
 }
-
+sys_void ds_linear_list_print(LinearList *pList)
+{
+  PRINTK("linear list data : ");
+  for(sys_int i=0; i<pList->get_linear_list_length(pList); i++)
+  {
+    PRINTK("%d ", pList->iElem[i]);
+  }
+  PRINTK("\n");
+}
 LinkedList *ds_linked_list_create(sys_int pData)
 {
   LinkedList *pList = (LinkedList *)sys_os_malloc(sizeof(LinkedList));
@@ -379,6 +450,9 @@ sys_void ds_linked_list_destory(LinkedList *pList)
 sys_bool linear_list_init(LinearList *pList)
 {
   pList->create_linear_list = ds_init_linear_list;
+  pList->create_linear_list_by_zero = ds_init_linear_list_by_zero;
+  pList->create_linear_list_by_one = ds_init_linear_list_by_one;
+  pList->create_linear_list_by_value = ds_init_linear_list_by_value;
   pList->destory_linear_list = ds_destory_linear_list;
   pList->insert_elem_to_linear_list = ds_insert_elem_to_linear_list;
   pList->delete_elem_from_linear_list = ds_delete_elem_from_linear_list;
@@ -387,5 +461,6 @@ sys_bool linear_list_init(LinearList *pList)
   pList->is_linear_list_empty = ds_is_linear_list_empty;
   pList->sort_linear_list = ds_sort_linear_list;
   pList->merge_linear_list = ds_merge_linear_list;
+  pList->print = ds_linear_list_print;
   return sys_true;
 }

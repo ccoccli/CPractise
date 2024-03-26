@@ -13,11 +13,21 @@ typedef struct _ds_linear_list_s
   sys_ulong iLength;
   sys_ulong iSize;
 
-  // 函数指针，用于初始化线性表并指定容量
+  // 函数指针，初始化线性表并指定容量
   sys_bool (*create_linear_list)(struct _ds_linear_list_s *, sys_int);
+  
+  // 函数指针，用0初始化线性表并指定容量
+  sys_bool (*create_linear_list_by_zero)(struct _ds_linear_list_s *, sys_int);
+
+  // 函数指针，用1初始化线性表并指定容量
+  sys_bool (*create_linear_list_by_one)(struct _ds_linear_list_s *, sys_int);
+
+  // 函数指针，用指定数据初始化线性表并指定容量
+  sys_bool (*create_linear_list_by_value)(struct _ds_linear_list_s *, sys_int, sys_int);
 
   // 函数指针，用于销毁线性表
   sys_bool (*destory_linear_list)(struct _ds_linear_list_s *);
+
   // 函数指针，用于在指定位置插入元素到线性表中
   sys_bool (*insert_elem_to_linear_list)(struct sys_int_ds_linear_list_s *, sys_int, sys_int);
 
@@ -38,6 +48,9 @@ typedef struct _ds_linear_list_s
 
   // 函数指针，用于合并两个线性表
   sys_bool (*merge_linear_list)(struct sys_int_ds_linear_list_s *, struct sys_int_ds_linear_list_s *, sys_bool);
+
+  // 函数指针，用于打印线性表
+  sys_void (*print)(struct sys_int_ds_linear_list_s *);
 } LinearList;
 
 // 单向链表
@@ -110,9 +123,9 @@ sys_void ds_linked_list_print(LinkedList *pList);
 
 /**
  * 获取链表的长度。
- * 
+ *
  * 遍历链表，计算并返回链表中的节点总数。
- * 
+ *
  * @param pList 指向链表头节点的指针。
  * @return 返回链表的长度。如果链表为空，返回0。
  */
@@ -120,10 +133,10 @@ sys_int ds_linked_list_length(const LinkedList *pList);
 
 /**
  * 在链表的指定位置插入一个新值。
- * 
+ *
  * 如果插入位置是0，则新节点成为新的头节点。
  * 如果插入位置大于链表长度，则不插入节点。
- * 
+ *
  * @param pList 指向链表头节点指针的指针，允许修改头节点。
  * @param index 插入的目标位置（基于0的索引）。
  * @param value 要插入的新值。
@@ -133,7 +146,7 @@ sys_int ds_linked_list_insert(LinkedList **pList, sys_int index, sys_int value);
 
 /**
  * 从链表中删除指定位置的节点，并返回被删除节点的数据。
- * 
+ *
  * @param pList 指向链表头节点指针的指针，以允许修改头节点。
  * @param index 要删除的节点的位置（基于0的索引）。
  * @param outData 指向int的指针，用于存储被删除节点的数据。
@@ -143,7 +156,7 @@ sys_int ds_linked_list_delete(LinkedList **pList, sys_int index, sys_int *outDat
 
 /**
  * 释放整个链表的内存。
- * 
+ *
  * @param pList 指向链表头节点的指针。
  */
 void ds_linked_list_destory(LinkedList *pList);

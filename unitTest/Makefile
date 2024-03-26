@@ -2,11 +2,12 @@ include ../make/env.mk
 
 CFLAGS := -std=c11 -Wall
 
-INC_DIR := -I../$(BASE_DIR)/sys \
-					 -I../$(BASE_DIR)/time/inc \
-					 -I../$(BASE_DIR)/log/inc \
-					 -I../$(BASE_DIR)/sys/inc \
-					 -I../$(DS_DIR)/$(LINKLIST)/inc
+INC_DIR := -I./$(INC) \
+					 -I../$(BASE_DIR)/sys \
+					 -I../$(BASE_DIR)/time/$(INC) \
+					 -I../$(BASE_DIR)/log/$(INC) \
+					 -I../$(BASE_DIR)/sys/$(INC) \
+					 -I../$(DS_DIR)/$(LINKLIST)/$(INC)
 
 LDFLAGS := -L../$(BASE_DIR) -L../$(DS_DIR) -lds -lsys_base -lpthread -lm
 
