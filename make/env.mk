@@ -1,4 +1,4 @@
-#CROSS_COMPILE := arm-linux-gnueabihf-
+#CROSS_COMPILE :=
 
 CC := $(CROSS_COMPILE)gcc
 CXX := $(CROSS_COMPILE)g++
@@ -30,6 +30,9 @@ LOG := log
 TIME := time
 INC  := inc
 SRC := src
+
+TOOLS := tools
+STATISTICS := statistics
 
 UNITTEST := unitTest
 
