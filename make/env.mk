@@ -13,7 +13,7 @@ FIND := find
 CD := cd
 MAKE := make
 ECHO := @echo
-CP := cp -rf
+CP := cp -raf
 
 
 LIB := lib
