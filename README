@@ -1,29 +1,20 @@
-# 1.文件目录说明
-
-```shell
+1.文件目录说明
 .
-├── base					//基础库
-│   ├── log					//日志库
-│   ├── sys					//系统函数库
-│   └── time				//时间库
-├── ds						//数据结构
-│   ├── linklist			//链表
-│   └── tree				//树
-├── make					//make环境
-├── tools					//工具
+├── base					      //基础库
+│   ├── log					    //日志库
+│   ├── sys					    //系统函数库
+│   └── time				    //时间库
+├── ds						      //数据结构
+│   ├── linklist			  //链表
+│   └── tree				    //树
+├── make					      //make环境
+├── tools					      //工具
 │   └── statistics			//文件统计
-└── unitTest				//单元测试
-```
+└── unitTest				    //单元测试
 
-# 2.编译
+2.编译
+  1.交叉编译
+  修改./make/env.mk中的CROSS_COMPILE
 
-## 1.交叉编译
-
-修改`./make/env.mk`中的`CROSS_COMPILE`
-
-## 2.编译选项
-
-```makefile
-all base ds unitTest clean tools
-```
-
+  2.编译选项
+  all base ds unitTest clean tools
