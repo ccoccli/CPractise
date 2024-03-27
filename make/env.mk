@@ -23,6 +23,7 @@ INCLUDES := includes
 
 DS_DIR := ds
 LINKLIST := linklist
+SORT := sort
 
 BASE_DIR := base
 SYS := sys

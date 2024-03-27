@@ -7,7 +7,8 @@ INC_DIR := -I./$(INC) \
 					 -I../$(BASE_DIR)/time/$(INC) \
 					 -I../$(BASE_DIR)/log/$(INC) \
 					 -I../$(BASE_DIR)/sys/$(INC) \
-					 -I../$(DS_DIR)/$(LINKLIST)/$(INC)
+					 -I../$(DS_DIR)/$(LINKLIST)/$(INC) \
+					 -I../$(DS_DIR)/$(SORT)/$(INC) 
 
 LDFLAGS := -L../$(BASE_DIR) -L../$(DS_DIR) -lds -lsys_base -lpthread -lm
 

@@ -52,6 +52,19 @@ sys_void unit_test_print_menu()
   PRINTK("*                  * h.merge two linear lists                     *\n");
   PRINTK("*                  * i.destroy the linear list                    *\n");
   PRINTK("*              * 5. linked list test                              *\n");
+  PRINTK("*                  * a.create a linked list                       *\n");
+  PRINTK("*                  * b.push a element to the head of the list     *\n");
+  PRINTK("*                  * c.push a element to the tail of the list     *\n");
+  PRINTK("*                  * d.pop a element from the head of the list    *\n");
+  PRINTK("*                  * e.pop a element from the tail of the list    *\n");
+  PRINTK("*                  * f.insert a element to the list by index      *\n");
+  PRINTK("*                  * g.delete a element from the list by index    *\n");
+  PRINTK("*                  * h.get the linked list length                 *\n");
+  PRINTK("*                  * i.destory the linked list                    *\n");
+  PRINTK("*              * 6. doubly linked list test                       *\n");
+  PRINTK("*              * 7. sort                                          *\n");
+  PRINTK("*                  * a. bubble sort                               *\n");
+  PRINTK("*                  * a. select sort                               *\n");
   PRINTK("*              * e. exit unit test                                *\n");
   PRINTK("*******************************************************************\n");
 
@@ -218,6 +231,196 @@ sys_void executeCommand(sys_char *pCommand)
   }
   case '5':
   {
+    static LinkedList *list = NULL;
+    switch (pCommand[1])
+    {
+    // create a linked list
+    case 'a':
+    {
+      sys_int list_data = 0;
+      PRINTK("please input the data of the ref : ");
+      scanf("%d", &list_data);
+
+      list = ds_linked_list_create(list_data);
+      if (list != NULL)
+      {
+        INFO("linked list create success !\n");
+      }
+      break;
+    }
+    // push head
+    case 'b':
+    {
+      sys_int list_data = 0;
+      PRINTK("please input the data of the ref : ");
+      scanf("%d", &list_data);
+      if (ds_linked_list_push_head(&list, list_data))
+      {
+        INFO("push head success !\n");
+        ds_linked_list_print(list);
+      }
+      break;
+    }
+    // push back
+    case 'c':
+    {
+      sys_int list_data = 0;
+      PRINTK("please input the data of the ref : ");
+      scanf("%d", &list_data);
+      if (ds_linked_list_push_back(list, list_data))
+      {
+        INFO("push tail success !\n");
+        ds_linked_list_print(list);
+      }
+      break;
+    }
+    // pop head
+    case 'd':
+    {
+      if (ds_linked_list_pop_head(&list))
+      {
+        INFO("pop head success !\n");
+        ds_linked_list_print(list);
+      }
+      break;
+    }
+    // pop tail
+    case 'e':
+    {
+      if (ds_linked_list_pop_back(list))
+      {
+        INFO("pop tail success !\n");
+        ds_linked_list_print(list);
+      }
+      break;
+    }
+    // insert element
+    case 'f':
+    {
+      sys_int list_data = 0, list_index = 0;
+      ;
+      PRINTK("please input the data of the ref and index: ");
+      scanf("%d%d", &list_data, &list_index);
+      if (ds_linked_list_insert(&list, list_index, list_data))
+      {
+        INFO("insert success !\n");
+        ds_linked_list_print(list);
+      }
+      break;
+    }
+    // delete element
+    case 'g':
+    {
+      sys_int list_data = 0, list_index = 0;
+      PRINTK("please input the index: ");
+      scanf("%d", &list_index);
+      if (ds_linked_list_delete(&list, list_index, &list_data))
+      {
+        INFO("delete success, data : %d\n", list_data);
+        ds_linked_list_print(list);
+      }
+      break;
+    }
+    // get length
+    case 'h':
+    {
+      INFO("the linked list length is  : %d\n", ds_linked_list_length(list));
+      break;
+    }
+    // destory linked list
+    case 'i':
+    {
+      ds_linked_list_destory(list);
+      break;
+    }
+    default:
+    {
+      ERROR("invalid command.\n");
+      break;
+    }
+    }
+    break;
+  }
+  case '6':
+  {
+    break;
+  }
+  case '7':
+  {
+    switch (pCommand[1])
+    {
+    case 'a':
+    {
+      sys_int array_size = 0, array_sort_rule = 0;
+      PRINTK("please input the size of the array :");
+      scanf("%d", &array_size);
+
+      sys_int *array = (sys_int *)sys_os_malloc(array_size * sizeof(sys_int));
+      PRINTK("please input the array element : ");
+      for (sys_int i = 0; i < array_size; i++)
+      {
+        scanf("%d", &array[i]);
+      }
+
+      PRINTK("please input the sort rule : (0 is from min to max | 1 is from max to min)");
+      scanf("%d", &array_sort_rule);
+
+      if (array_sort_rule == 0)
+      {
+        ds_sort_select_sort(array, array_size, sys_true);
+      }
+      else
+      {
+        ds_sort_select_sort(array, array_size, sys_false);
+      }
+      PRINTK("the array has been bubble sorted :");
+      for (sys_int i = 0; i < array_size; i++)
+      {
+        PRINTK("%d ", array[i]);
+      }
+      PRINTK("\n");
+      sys_os_free(array);
+      break;
+    }
+    case 'b':
+    {
+      sys_int array_size = 0, array_sort_rule = 0;
+      PRINTK("please input the size of the array :");
+      scanf("%d", &array_size);
+
+      sys_int *array = (sys_int *)sys_os_malloc(array_size * sizeof(sys_int));
+      PRINTK("please input the array element : ");
+      for (sys_int i = 0; i < array_size; i++)
+      {
+        scanf("%d", &array[i]);
+      }
+
+      PRINTK("please input the sort rule : (0 is from min to max | 1 is from max to min)");
+      scanf("%d", &array_sort_rule);
+
+      if (array_sort_rule == 0)
+      {
+        ds_sort_select_sort(array, array_size, sys_true);
+      }
+      else
+      {
+        ds_sort_select_sort(array, array_size, sys_false);
+      }
+      PRINTK("the array has been select sorted :");
+      for (sys_int i = 0; i < array_size; i++)
+      {
+        PRINTK("%d ", array[i]);
+      }
+      PRINTK("\n");
+      sys_os_free(array);
+      break;
+    }
+    default:
+    {
+      ERROR("invalid command.\n");
+      break;
+    }
+    }
     break;
   }
   case 'e':

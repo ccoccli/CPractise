@@ -1,6 +1,6 @@
 include make/env.mk
 
-all: makedir base ds tools unitTest copy_inc
+all: makedir base ds tools unitTest
 
 makedir:
 	$(MK) $(OUT) && $(CD) $(OUT) && $(MK) $(LIB) && $(MK) $(BIN) && $(MK) $(INCLUDES)
@@ -17,7 +17,7 @@ unitTest:
 tools:
 	$(CD) $(TOOLS) && $(MAKE)
 
-#¿½±´ËùÓĞÍ·ÎÄ¼şµ½Êä³öÄ¿Â¼
+#æ‹·è´æ‰€æœ‰å¤´æ–‡ä»¶åˆ°è¾“å‡ºç›®å½•
 copy_inc:
 	$(FIND) . -type d -name 'inc' | while read -r dir; do \
 		dest="./$(OUT)/$(INCLUDES)/$$(dirname "$${dir#./}")"; \

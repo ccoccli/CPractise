@@ -3,6 +3,7 @@
 
 #include <sys_type.h>
 #include <sys_os.h>
+#include <sys_log.h>
 
 #define SIZE_INCREASE_STEP 10
 
@@ -15,7 +16,7 @@ typedef struct _ds_linear_list_s
 
   // 函数指针，初始化线性表并指定容量
   sys_bool (*create_linear_list)(struct _ds_linear_list_s *, sys_int);
-  
+
   // 函数指针，用0初始化线性表并指定容量
   sys_bool (*create_linear_list_by_zero)(struct _ds_linear_list_s *, sys_int);
 
@@ -59,6 +60,34 @@ typedef struct _linked_list_node_s
   sys_int iData;
   struct _linked_list_node_s *next;
 } LinkedList;
+
+// 双向链表节点
+typedef struct _doubly_linked_list_node_s
+{
+  sys_int iData;
+  struct _doubly_linked_list_node_s *prev;
+  struct _doubly_linked_list_node_s *next;
+} DoublyLinkedListNode;
+
+// 双向链表
+typedef struct _doubly_linked_list_s
+{
+  DoublyLinkedListNode *head;
+  DoublyLinkedListNode *tail;
+} DoublyLinkedList;
+
+// 循环链表节点
+typedef struct _circular_linked_list_node_s
+{
+  sys_int iData;
+  struct _circular_linked_list_node_s *next;
+} CircularLinkedListNode;
+
+// 循环链表
+typedef struct _circular_linked_list_s
+{
+  CircularLinkedListNode *head;
+} CircularLinkedList;
 
 // 声明用于初始化线性表的函数
 sys_bool linear_list_init(LinearList *pList);
@@ -159,5 +188,93 @@ sys_int ds_linked_list_delete(LinkedList **pList, sys_int index, sys_int *outDat
  *
  * @param pList 指向链表头节点的指针。
  */
-void ds_linked_list_destory(LinkedList *pList);
+sys_void ds_linked_list_destory(LinkedList *pList);
+
+/**
+ * @brief 创建一个新的双向链表节点。
+ *
+ * @param pData 节点中要存储的数据。
+ * @return DoublyLinkedListNode* 返回新创建的节点的指针。
+ */
+DoublyLinkedListNode *ds_doubly_linked_list_create_node(sys_int pData);
+
+/**
+ * @brief 初始化双向链表。
+ *
+ * @param pList 指向双向链表的指针。
+ */
+sys_void ds_doubly_linked_list_init(DoublyLinkedList *pList);
+
+/**
+ * @brief 在双向链表的末尾添加一个新节点。
+ *
+ * @param pList 指向双向链表的指针。
+ * @param pData 要添加的新数据。
+ */
+sys_void ds_doubly_linked_list_push_back(DoublyLinkedList *pList, sys_int pData);
+
+/**
+ * @brief 在双向链表的头部添加一个新节点。
+ *
+ * @param pList 指向双向链表的指针。
+ * @param pData 要添加的新数据。
+ */
+sys_void ds_doubly_linked_list_push_head(DoublyLinkedList *pList, sys_int pData);
+
+/**
+ * @brief 从双向链表的末尾移除一个节点。
+ *
+ * @param pList 指向双向链表的指针。
+ */
+sys_void ds_doubly_linked_list_pop_back(DoublyLinkedList *pList);
+
+/**
+ * @brief 从双向链表的头部移除一个节点。
+ *
+ * @param pList 指向双向链表的指针。
+ */
+sys_void ds_doubly_linked_list_pop_head(DoublyLinkedList *pList);
+
+/**
+ * @brief 遍历双向链表，从头到尾打印所有节点的数据。
+ *
+ * @param pList 指向双向链表的指针。
+ */
+sys_void ds_doubly_linked_list_traverse_list(DoublyLinkedList *pList);
+
+/**
+ * @brief 反向遍历双向链表，从尾到头打印所有节点的数据。
+ *
+ * @param pList 指向双向链表的指针。
+ */
+sys_void ds_doubly_linked_list_reverse_list(DoublyLinkedList *pList);
+
+/**
+ * @brief 销毁双向链表，释放所有节点占用的内存。
+ *
+ * @param pList 指向双向链表的指针。
+ */
+sys_void ds_doubly_linked_list_destory_list(DoublyLinkedList *pList);
+/**
+ * @brief 获取双向链表的长度。
+ *
+ * @param pList 指向双向链表的指针。
+ * @return 返回双向链表的长度。
+ */
+sys_int ds_doubly_linked_list_get_length(DoublyLinkedList *pList);
+/**
+ * @brief 在双向链表的指定索引位置插入一个新节点。
+ * 
+ * @param pList 指向双向链表的指针。
+ * @param pIndex 要插入的位置的索引，索引从0开始。
+ * @param pData 要插入的新节点的数据。
+ */
+sys_void ds_doubly_linked_list_insert_at_index(DoublyLinkedList *pList, sys_int pIndex, sys_int pData);
+/**
+ * @brief 从双向链表中删除指定索引位置的节点。
+ * 
+ * @param pList 指向双向链表的指针。
+ * @param pIndex 要删除的节点的索引，索引从0开始。
+ */
+sys_void ds_doubly_linked_list_delete_at_index(DoublyLinkedList *pList, sys_int pIndex);
 #endif //__DS_SINGLY_LINKED_LIST_H__

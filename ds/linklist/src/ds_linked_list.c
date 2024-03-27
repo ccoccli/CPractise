@@ -32,7 +32,7 @@ sys_bool ds_init_linear_list_by_zero(LinearList *pList, sys_int iSize)
   pList->iLength = iSize;
   pList->iSize = iSize;
 
-  for(sys_int i = 0; i< iSize; i++)
+  for (sys_int i = 0; i < iSize; i++)
   {
     pList->iElem[i] = 0;
   }
@@ -53,7 +53,7 @@ sys_bool ds_init_linear_list_by_one(LinearList *pList, sys_int iSize)
   pList->iLength = iSize;
   pList->iSize = iSize;
 
-  for(sys_int i = 0; i< iSize; i++)
+  for (sys_int i = 0; i < iSize; i++)
   {
     pList->iElem[i] = 1;
   }
@@ -74,7 +74,7 @@ sys_bool ds_init_linear_list_by_value(LinearList *pList, sys_int iSize, sys_int 
   pList->iLength = iSize;
   pList->iSize = iSize;
 
-  for(sys_int i = 0; i< iSize; i++)
+  for (sys_int i = 0; i < iSize; i++)
   {
     pList->iElem[i] = pValue;
   }
@@ -91,13 +91,11 @@ sys_bool ds_destory_linear_list(LinearList *pList)
 }
 sys_bool ds_insert_elem_to_linear_list(LinearList *pList, sys_int pPosition, sys_int pValue)
 {
-  // 检查插入位置是否合法
   if (pPosition < 1 || pPosition > pList->iSize + 1)
   {
     return sys_false;
   }
 
-  // 检查空间是否已满
   if (pList->get_linear_list_length(pList) >= pList->get_linear_list_size(pList))
   {
     sys_int *ptr = (sys_int *)sys_os_realloc(pList->iElem, (pList->get_linear_list_size(pList) + SIZE_INCREASE_STEP) * sizeof(sys_int));
@@ -109,7 +107,7 @@ sys_bool ds_insert_elem_to_linear_list(LinearList *pList, sys_int pPosition, sys
     pList->iElem = ptr;
     pList->iSize += SIZE_INCREASE_STEP;
   }
-  //INFO("addr=0x%x, size=%d,length=%d\n", pList->iElem, pList->iSize, pList->iLength);
+  // INFO("addr=0x%x, size=%d,length=%d\n", pList->iElem, pList->iSize, pList->iLength);
 
   sys_int *pos = &(pList->iElem[pPosition - 1]);
 
@@ -215,7 +213,7 @@ sys_bool ds_merge_linear_list(LinearList *pList_dst, LinearList *pList_src, sys_
 sys_void ds_linear_list_print(LinearList *pList)
 {
   PRINTK("linear list data : ");
-  for(sys_int i=0; i<pList->get_linear_list_length(pList); i++)
+  for (sys_int i = 0; i < pList->get_linear_list_length(pList); i++)
   {
     PRINTK("%d ", pList->iElem[i]);
   }
@@ -399,7 +397,6 @@ sys_int ds_linked_list_insert(LinkedList **pList, sys_int index, sys_int value)
 
 sys_int ds_linked_list_delete(LinkedList **pList, sys_int index, sys_int *outData)
 {
-  // 检查链表是否为空或位置是否有效
   if (*pList == NULL || index < 0)
   {
     return 0;
@@ -407,33 +404,29 @@ sys_int ds_linked_list_delete(LinkedList **pList, sys_int index, sys_int *outDat
 
   LinkedList *temp, *current = *pList;
 
-  // 处理删除头节点的情况
   if (index == 0)
   {
-    *pList = current->next;          // 更新头节点
-    *outData = current->iData;        // 返回被删除节点的数据
-    sys_os_free(current);            // 释放被删除节点的内存
+    *pList = current->next;
+    *outData = current->iData;
+    sys_os_free(current);
     return 1;
   }
 
-  // 查找目标位置的前一个节点
   for (sys_int i = 0; i < index - 1 && current != NULL; i++)
   {
     current = current->next;
   }
 
-  // 检查是否找到有效的前一个节点
   if (current == NULL || current->next == NULL)
   {
-    return 0; // 位置无效
+    return 0;
   }
 
-  // 更新链接以跳过要删除的节点
-  temp = current->next;       // 指向要删除的节点
-  current->next = temp->next; // 跳过要删除的节点
-  *outData = temp->iData;      // 返回被删除节点的数据
+  temp = current->next;
+  current->next = temp->next;
+  *outData = temp->iData;
 
-  sys_os_free(temp);          // 释放被删除节点的内存
+  sys_os_free(temp);
   return 1;
 }
 
@@ -446,6 +439,230 @@ sys_void ds_linked_list_destory(LinkedList *pList)
     current = current->next;
     sys_os_free(temp);
   }
+}
+DoublyLinkedListNode *ds_doubly_linked_list_create_node(sys_int pData)
+{
+  DoublyLinkedListNode *newNode = (DoublyLinkedListNode *)sys_os_malloc(sizeof(DoublyLinkedListNode));
+  if (newNode)
+  {
+    newNode->iData = pData;
+    newNode->prev = NULL;
+    newNode->next = NULL;
+  }
+  return newNode;
+}
+sys_void ds_doubly_linked_list_init(DoublyLinkedList *pList)
+{
+  pList->head = NULL;
+  pList->tail = NULL;
+}
+sys_void ds_doubly_linked_list_push_back(DoublyLinkedList *pList, sys_int pData)
+{
+  DoublyLinkedListNode *newNode = ds_doubly_linked_list_create_node(pData);
+  if (!pList->head)
+  {
+    pList->head = newNode;
+    pList->tail = newNode;
+  }
+  else
+  {
+    pList->tail->next = newNode;
+    newNode->prev = pList->tail;
+    pList->tail = newNode;
+  }
+}
+sys_void ds_doubly_linked_list_push_head(DoublyLinkedList *pList, sys_int pData)
+{
+  DoublyLinkedListNode *newNode = ds_doubly_linked_list_create_node(pData);
+  if (!pList->head)
+  {
+    pList->head = newNode;
+    pList->tail = newNode;
+  }
+  else
+  {
+    newNode->next = pList->head;
+    pList->head->prev = newNode;
+    pList->head = newNode;
+  }
+}
+sys_void ds_doubly_linked_list_pop_back(DoublyLinkedList *pList)
+{
+  if (pList->tail == NULL)
+  {
+    return;
+  }
+
+  DoublyLinkedListNode *toDelete = pList->tail;
+  if (pList->head == pList->tail)
+  {
+    pList->head = NULL;
+    pList->tail = NULL;
+  }
+  else
+  {
+    pList->tail = pList->tail->prev;
+    pList->tail->next = NULL;
+  }
+  sys_os_free(toDelete);
+}
+sys_void ds_doubly_linked_list_pop_head(DoublyLinkedList *pList)
+{
+  if (pList->head == NULL)
+  {
+    return;
+  }
+
+  DoublyLinkedListNode *toDelete = pList->head;
+  if (pList->head == pList->tail)
+  {
+    pList->head = NULL;
+    pList->tail = NULL;
+  }
+  else
+  {
+    pList->head = pList->head->next;
+    pList->head->prev = NULL;
+  }
+  sys_os_free(toDelete);
+}
+sys_void ds_doubly_linked_list_traverse_list(DoublyLinkedList *pList)
+{
+  DoublyLinkedListNode *temp = pList->head;
+  while (temp)
+  {
+    PRINTK("%d ", temp->iData);
+    temp = temp->next;
+  }
+  PRINTK("\n");
+}
+sys_void ds_doubly_linked_list_reverse_list(DoublyLinkedList *pList)
+{
+  DoublyLinkedListNode *temp = pList->tail;
+  while (temp)
+  {
+    PRINTK("%d ", temp->iData);
+    temp = temp->prev;
+  }
+  PRINTK("\n");
+}
+sys_void ds_doubly_linked_list_destory_list(DoublyLinkedList *pList)
+{
+  DoublyLinkedListNode *temp = pList->head;
+  while (temp)
+  {
+    DoublyLinkedListNode *next = temp->next;
+    sys_os_free(temp);
+    temp = next;
+  }
+  pList->head = NULL;
+  pList->tail = NULL;
+}
+sys_int ds_doubly_linked_list_get_length(DoublyLinkedList *pList)
+{
+  sys_int length = 0;
+  DoublyLinkedListNode *current = pList->head;
+
+  while (current != NULL)
+  {
+    length++;
+    current = current->next;
+  }
+
+  return length;
+}
+sys_void ds_doubly_linked_list_insert_at_index(DoublyLinkedList *pList, sys_int pIndex, sys_int pData)
+{
+  if (pIndex < 0)
+  {
+    return;
+  }
+
+  DoublyLinkedListNode *newNode = ds_doubly_linked_list_create_node(pData);
+  if (!newNode)
+  {
+    return;
+  }
+
+  if (pIndex == 0)
+  {
+    newNode->next = pList->head;
+    if (pList->head != NULL)
+    {
+      pList->head->prev = newNode;
+    }
+    pList->head = newNode;
+    return;
+  }
+
+  DoublyLinkedListNode *current = pList->head;
+  sys_int currentIndex = 0;
+
+  while (current != NULL && currentIndex < pIndex - 1)
+  {
+    current = current->next;
+    currentIndex++;
+  }
+
+  if (current == NULL)
+  {
+    sys_os_free(newNode);
+    return;
+  }
+
+  newNode->next = current->next;
+  newNode->prev = current;
+  if (current->next != NULL)
+  {
+    current->next->prev = newNode;
+  }
+  current->next = newNode;
+}
+sys_void ds_doubly_linked_list_delete_at_index(DoublyLinkedList *pList, sys_int pIndex)
+{
+  if (pIndex < 0)
+  {
+    return;
+  }
+
+  if (pList->head == NULL)
+  {
+    return;
+  }
+
+  if (pIndex == 0)
+  {
+    DoublyLinkedListNode *toDelete = pList->head;
+    pList->head = pList->head->next;
+    if (pList->head != NULL)
+    {
+      pList->head->prev = NULL;
+    }
+    sys_os_free(toDelete);
+    return;
+  }
+
+  DoublyLinkedListNode *current = pList->head;
+  sys_int currentIndex = 0;
+
+  while (current != NULL && currentIndex < pIndex)
+  {
+    current = current->next;
+    currentIndex++;
+  }
+
+  if (current == NULL || current->next == NULL)
+  {
+    return;
+  }
+
+  DoublyLinkedListNode *toDelete = current->next;
+  current->next = current->next->next;
+  if (current->next != NULL)
+  {
+    current->next->prev = current;
+  }
+  sys_os_free(toDelete);
 }
 sys_bool linear_list_init(LinearList *pList)
 {

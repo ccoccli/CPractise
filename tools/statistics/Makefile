@@ -9,7 +9,7 @@ INC_DIR := -I./$(INC) \
 					 -I../../$(BASE_DIR)/sys/$(INC) \
 					 -I../../$(DS_DIR)/$(LINKLIST)/$(INC)
 
-LDFLAGS := -L../../$(BASE_DIR) -L../../$(DS_DIR) -lds -lsys_base -lpthread -lm
+LDFLAGS := -L../../$(BASE_DIR) -L../../$(DS_DIR) -lds -lsys_base
 
 SRCS := $(SRC)/main.c
 OBJS := $(SRCS:.c=.o)
